@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5 Days Left – Love Locks</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Times New Roman', Times, serif;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #d63031;
+      margin-bottom: 20px;
+    }
+
+    .locks {
+      display: flex;
+      gap: 15px;
+    }
+
+    .lock {
+      width: 60px;
+      height: 60px;
+      background: #ffeaa7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 28px;
+      transition: transform 0.2s;
+    }
+
+    .lock.unlocked {
+      background: #55efc4;
+      color: #2d3436;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #2d3436;
+      display: none;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+      z-index: 1000;
+      display: none;
+    }
+
+    .popup input {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .popup button {
+      margin-top: 15px;
+      padding: 8px 20px;
+      font-size: 16px;
+      background: #0984e3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 500;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Unlock the 5 Love Locks!</h1>
+<div class="locks">
+  <div class="lock" onclick="showPopup(0)">🔐</div>
+  <div class="lock" onclick="showPopup(1)">🔐</div>
+  <div class="lock" onclick="showPopup(2)">🔐</div>
+  <div class="lock" onclick="showPopup(3)">🔐</div>
+  <div class="lock" onclick="showPopup(4)">🔐</div>
+</div>
+<div class="message" id="finalMessage"></div>
+
+<div id="overlay"></div>
+<div class="popup" id="popupBox">
+  <div id="popupQuestion"></div>
+  <input type="text" id="popupAnswer" placeholder="Your answer here">
+  <br>
+  <button onclick="submitAnswer()">Submit</button>
+</div>
+
+<script>
+  const questions = [
+    { q: "What color represents love?", a: "RED" },
+    { q: "Complete the phrase: Forever and ____", a: "ALWAYS" },
+    { q: "Emoji for love? (type the word)", a: "HEART" },
+    { q: "What is the Nikkah date?", a: "27 FEB" },
+    { q: "Fill in: You + Me = ?", a: "US" }
+  ];
+
+  let currentIndex = 0;
+  let unlocked = [false, false, false, false, false];
+
+  function showPopup(index) {
+    if (unlocked[index]) return;
+    currentIndex = index;
+    document.getElementById("popupQuestion").textContent = questions[index].q;
+    document.getElementById("popupAnswer").value = "";
+    document.getElementById("popupBox").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function submitAnswer() {
+    const userInput = document.getElementById("popupAnswer").value.trim().toUpperCase();
+    if (userInput === questions[currentIndex].a) {
+      document.querySelectorAll(".lock")[currentIndex].classList.add("unlocked");
+      document.querySelectorAll(".lock")[currentIndex].textContent = "🔓";
+      unlocked[currentIndex] = true;
+      checkAllUnlocked();
+    } else {
+      alert("Wrong answer. Try again! 💔");
+    }
+    document.getElementById("popupBox").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+  }
+
+  function checkAllUnlocked() {
+    if (unlocked.every(val => val)) {
+      const msg = document.getElementById("finalMessage");
+      msg.style.display = "block";
+      msg.innerHTML = "<strong>🎉 5 Days Left! 🎉<br>Until two souls, one heart, and a lifetime of love begins. 🕊️💕</strong>";
+    }
+  }
+</script>
+
+</body>
+</html>
